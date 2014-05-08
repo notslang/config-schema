@@ -1,5 +1,5 @@
 # config-schema
-[![Build Status](https://travis-ci.org/slang800/config-schema.svg?branch=master)](https://travis-ci.org/slang800/config-schema)
+[![Build Status](http://img.shields.io/travis/slang800/config-schema.svg?style=flat)](https://travis-ci.org/slang800/config-schema)
 
 A lightweight wrapper for configuration options using JSON schema.
 
