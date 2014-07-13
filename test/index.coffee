@@ -1,65 +1,65 @@
 should = require 'should'
-DeployerConfig = require '../lib'
+ConfigSchema = require '../lib'
 
-describe 'DeployerConfig', ->
+describe 'ConfigSchema', ->
   beforeEach ->
-    @deployerConfig = new DeployerConfig()
+    @config = new ConfigSchema()
 
   it 'should have all the right attributes', ->
-    @deployerConfig.schema.should.eql({})
-    @deployerConfig.validate({}).should.eql({})
+    @config.schema.should.eql({})
+    @config.validate({}).should.eql({})
 
   it 'should validate', ->
-    @deployerConfig.schema =
+    @config.schema =
       someOption:
         type: 'boolean'
 
-    @deployerConfig
+    @config
       .validate(someOption: true)
       .should.eql(someOption: true)
 
   it 'should throw validate errors', ->
-    @deployerConfig.schema =
+    @config.schema =
       someOption:
         type: 'boolean'
 
-    (=> @deployerConfig.validate(someOption: 42)).should.throw(
+    (=> @config.validate(someOption: 42)).should.throw(
       'number value found, but a boolean is required'
     )
 
   it 'should validate individual options', ->
-    @deployerConfig.schema =
+    @config.schema =
       someOption:
         type: 'boolean'
 
-    @deployerConfig.validateOption('someOption', true).should.eql(
+    @config.validateOption('someOption', true).should.eql(
       errors: []
       valid: true
     )
 
-    @deployerConfig.validateOption('someOption', 42).should.eql(
+    @config.validateOption('someOption', 42).should.eql(
       errors: ['number value found, but a boolean is required']
       valid: false
     )
 
   it 'should apply defaults with validate() without mutating @data', ->
-    @deployerConfig.schema =
+    @config.schema =
       someOption:
         type: 'boolean'
         default: true
 
     data = {}
-    @deployerConfig.validate(data).should.eql(someOption: true)
+    @config.validate(data).should.eql(someOption: true)
     data.should.eql({})
 
   it 'should error when extraneous attributes are passed', ->
-    @deployerConfig.schema =
+    @config.schema =
       someOption:
         type: 'boolean'
         default: true
 
     data = {aBadOption: 42}
     try
-      @deployerConfig.validate(data)
+      @config.validate(data)
     catch error
       error.should.match /The property aBadOption is not defined in the schema/
