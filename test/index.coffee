@@ -49,5 +49,17 @@ describe 'DeployerConfig', ->
         default: true
 
     data = {}
-    @deployerConfig.validate(data).should.eql({someOption: true})
+    @deployerConfig.validate(data).should.eql(someOption: true)
     data.should.eql({})
+
+  it 'should error when extraneous attributes are passed', ->
+    @deployerConfig.schema =
+      someOption:
+        type: 'boolean'
+        default: true
+
+    data = {aBadOption: 42}
+    try
+      @deployerConfig.validate(data)
+    catch error
+      error.should.match /The property aBadOption is not defined in the schema/

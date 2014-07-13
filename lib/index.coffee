@@ -42,6 +42,7 @@ class ConfigSchema
       {
         type: 'object'
         properties: @_getSchema()
+        additionalProperties: false
       }
     )
     check.data = data
